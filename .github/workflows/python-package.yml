@@ -24,3 +24,16 @@ jobs:
               run: poetry install -E dev
             - name: Run tests
               run: poetry run pytest
+    docs:
+      needs: test
+      if: github.ref_name == 'develop'
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v3
+        - uses: actions/setup-python@v4
+          with:
+            python-version: "3.10"
+        - run: pip install mkdocs
+        - run: git config user.name 'github-actions[bot]' && git config user.email 'github-actions[bot]@users.noreply.github.com'
+        - name: Publish Docs to Github Pages
+          run: mkdocs gh-deploy
