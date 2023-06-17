@@ -26,7 +26,7 @@ jobs:
               run: poetry run pytest
     docs:
       needs: test
-      if: github.ref_name == 'develop'
+      if: github.ref_name == 'main'
       runs-on: ubuntu-latest
       steps:
         - uses: actions/checkout@v3
