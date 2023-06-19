@@ -1,0 +1,41 @@
+name: Python test
+on:
+    push:
+      branches:
+        - main
+        - develop
+    pull_request:
+jobs:
+    test:
+      strategy:
+        matrix:
+          python-version: ["3.8", "3.9", "3.10"]
+          os-version: ["ubuntu-latest", "macos-latest"]
+      outputs:
+        pkg_version: ${{ steps.export-version.outputs.version }}
+      runs-on: ${{ matrix.os-version }}
+      steps:
+        - uses: actions/checkout@v3
+        - uses: actions/setup-python@v4
+          name: Setup Python (${{ matrix.python-version }})
+          with:
+            python-version: ${{ matrix.python-version }}
+        - uses: snok/install-poetry@v1.3.3
+          name: Install poetry
+        - name: Install dependencies
+          run: poetry install -E dev
+        - name: Run tests
+          run: poetry run pytest
+        - id: export-version
+          run: echo "version=$(poetry version --short)" >> "$GITHUB_OUTPUT"
+    draft-release:
+      if: github.ref_name == 'main'
+      permissions:
+        contents: write
+        pull-requests: write
+      runs-on: ubuntu-latest
+      steps:
+        - uses: release-drafter/release-drafter@v5
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            RESOLVED_VERSION: ${{ needs.test.outputs.pkg_version }}
