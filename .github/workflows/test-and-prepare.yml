@@ -40,3 +40,6 @@ jobs:
           env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
             PACKAGE_VERSION: ${{ needs.test.outputs.pkg_version }}
+          with:
+            version: $PACKAGE_VERSION
+            tag: v$PACKAGE_VERSION
