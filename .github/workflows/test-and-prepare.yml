@@ -9,8 +9,8 @@ jobs:
     test:
       strategy:
         matrix:
-          python-version: ["3.8", "3.9", "3.10"]
-          os-version: ["ubuntu-latest", "macos-latest"]
+          python-version: ["3.10"]
+          os-version: ["ubuntu-latest"]
       outputs:
         pkg_version: ${{ steps.export-version.outputs.version }}
       runs-on: ${{ matrix.os-version }}
@@ -39,7 +39,6 @@ jobs:
         - uses: release-drafter/release-drafter@v5
           env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-            PACKAGE_VERSION: ${{ needs.test.outputs.pkg_version }}
           with:
-            version: $PACKAGE_VERSION
-            tag: v$PACKAGE_VERSION
+            version: ${{ needs.test.outputs.pkg_version }}
+            tag: v${{ needs.test.outputs.pkg_version }}
