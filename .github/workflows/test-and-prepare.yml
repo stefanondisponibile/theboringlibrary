@@ -30,6 +30,7 @@ jobs:
           run: echo "version=$(poetry version --short)" >> "$GITHUB_OUTPUT"
     draft-release:
       if: github.ref_name == 'main'
+      needs: test
       permissions:
         contents: write
         pull-requests: write
@@ -38,4 +39,4 @@ jobs:
         - uses: release-drafter/release-drafter@v5
           env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-            RESOLVED_VERSION: ${{ needs.test.outputs.pkg_version }}
+            PACKAGE_VERSION: ${{ needs.test.outputs.pkg_version }}
