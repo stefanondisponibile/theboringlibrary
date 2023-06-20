@@ -33,12 +33,9 @@ jobs:
         run: poetry publish --skip-existing --repository testpypi
       - name: Publish package to Pypi
         run: poetry publish --skip-existing
+      - run: zip -r dist.zip dist
       - name: Publish files to release
-        run: |
-          sudo apt-get install -y zip && \
-          zip -r dist.zip dist \ 
-          && gh release upload v$(poetry version --short) --clobber \
-            dist.zip#dist
+        run:  gh release upload v$(poetry version --short) --clobber dist.zip#dist
       - name: Publish docs
         run: poetry run mkdocs
       - run: |
