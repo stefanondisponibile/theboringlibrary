@@ -33,7 +33,7 @@ jobs:
         run: poetry publish --skip-existing
       - name: Publish files to release
         run: |
-          gh upload v$(poetry version --short) --clobber \
+          gh release upload v$(poetry version --short) --clobber \
             dist/*.gz#sdist \
             dist/*.whl#wheel
       - name: Publish docs
