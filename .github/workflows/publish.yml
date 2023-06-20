@@ -30,7 +30,7 @@ jobs:
       - name: Publish package to Test Pypi
         run: poetry publish --skip-existing --repository testpypi
       - name: Publish package to Pypi
-        run: poetry publish --skip-existing --repository pypi
+        run: poetry publish --skip-existing
       - name: Publish files to release
         run: |
           gh upload v$(poetry version --short) --clobber \
