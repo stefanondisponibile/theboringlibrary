@@ -35,9 +35,9 @@ jobs:
         run: poetry publish --skip-existing
       - name: Publish files to release
         run: |
-          gh release upload v$(poetry version --short) --clobber \
-            dist/*.gz#sdist \
-            dist/*.whl#wheel
+          zip -r dist.zip dist \ 
+          && gh release upload v$(poetry version --short) --clobber \
+            dist.zip#dist
       - name: Publish docs
         run: poetry run mkdocs
       - run: |
