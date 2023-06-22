@@ -14,7 +14,8 @@ on:
       sha:
         description: |
           a specific SHA or branch that will be used for the initial checkout.
-        required: true
+          You care about this if in the meantime the documentation changed.
+        required: false
         type: string
 jobs:
   build:
