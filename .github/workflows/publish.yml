@@ -19,7 +19,6 @@ on:
         type: string
 jobs:
   build:
-    environment: production
     runs-on: ubuntu-latest
     permissions:
       contents: write
