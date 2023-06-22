@@ -4,6 +4,20 @@ on:
   push:
     tags:
       - "v[0-9]+.[0-9]+.[0-9]+"
+  workflow_dispatch:
+    inputs:
+      release_version:
+        description: |
+          the release version to publish manually (e.g. `42.0.0`).
+          DO NOT include the leading `v`.
+        required: true
+        type: string
+      sha:
+        description: |
+          a specific SHA or branch that will be used for the initial checkout.
+          You care about this if in the meantime the documentation changed.
+        required: false
+        type: string
 jobs:
   build:
     if: github.event_name == 'push'
