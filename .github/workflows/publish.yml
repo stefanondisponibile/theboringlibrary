@@ -29,7 +29,7 @@ jobs:
             && gh release download \
                 -p "$(poetry version | cut -d ' ' -f1)*.whl" \
                 -p "$(poetry version | cut -d ' ' -f1)*.tar.gz" \
-                -d 'dist/' \
+                -D 'dist/' \
                 v${{ github.ref_name }}
       - name: Publish package to Pypi
         run: poetry publish -n -vvv
