@@ -7,8 +7,7 @@ on:
     inputs:
       release_version:
         description: |
-          the release version to publish manually (e.g. `42.0.0`).
-          DO NOT include the leading `v`.
+          the release version to publish manually (e.g. `v42.0.0`).
         required: true
         type: string
       sha:
@@ -44,7 +43,7 @@ jobs:
                 -p "$(poetry version | cut -d ' ' -f1)*.whl" \
                 -p "$(poetry version | cut -d ' ' -f1)*.tar.gz" \
                 -D 'dist/' \
-                v${{ inputs.release_version || github.ref_name }}
+                ${{ inputs.release_version || github.ref_name }}
       - name: Publish package to Pypi
         run: poetry publish -n -vvv
       - name: Publish documentation
