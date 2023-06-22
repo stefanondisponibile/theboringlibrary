@@ -1,4 +1,4 @@
-name: Publish
+name: Publish release
 on:
   release:
     types:
@@ -12,6 +12,8 @@ jobs:
       GH_TOKEN: ${{ github.token }}
     steps:
       - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.sha }}
       - uses: actions/setup-python@v4
         name: Setup Python
       - uses: snok/install-poetry@v1.3.3
@@ -29,5 +31,11 @@ jobs:
                 -p "$(poetry version | cut -d ' ' -f1)*.tar.gz" \
                 -d 'dist/' \
                 v${{ github.ref_name }}
-      - name: Publish package to Test Pypi
+      - name: Publish package to Pypi
         run: poetry publish -n -vvv
+      - name: Publish documentation
+        run: |
+          git config user.name 'github-actions[bot]' && \
+          git config user.email 'github-actions[bot]@users.noreply.github.com' && \
+          poetry run mkdocs && \
+          poetry run mkdocs gh-deploy --force --clean --verbose
