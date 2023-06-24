@@ -34,7 +34,7 @@ jobs:
                 result-encoding: string
             - name: Compare versions
               id: comparison
-              run: python -c "import semver;print('result=', semver.compare('${{steps.current_version.outputs.result}}', '${{steps.previous_version.outputs.result}}'))" >> "$GITHUB_OUTPUT"
+              run: python -c "import semver;print('result=', semver.compare('${{steps.current_version.outputs.result}}'[1:], '${{steps.previous_version.outputs.result}}'[1:]))" >> "$GITHUB_OUTPUT"
             - name: Add comment
               if: steps.comparison.outputs.result != '1'
               uses: peter-evans/create-or-update-comment@v2
