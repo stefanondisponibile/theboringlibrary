@@ -1,0 +1,47 @@
+---
+name: Check Release version
+on:
+    pull_request:
+        types:
+            - labeled
+jobs:
+    check-version:
+        if: ${{ github.event.label.name == 'release' }}
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v3
+            - uses: actions/setup-python@v4
+            - uses: snok/install-poetry@v1.3.3
+            - name: Get current version
+              id: current_version
+              run: echo "result=v$(poetry version --short)" >> "$GITHUB_OUTPUT"
+            - uses: actions/github-script@v4
+              name: Get previous version (latest release)
+              id: previous_version
+              with:
+                script: |
+                    const { data: releases } = await github.repos.listReleases({
+                        owner: context.repo.owner,
+                        repo: context.repo.repo,
+                    });
+                    const latestRelease = releases[0];
+                    console.log(`Latest Release: ${latestRelease.tag_name}`);
+                    return latestRelease.tag_name
+                result-encoding: string
+            - uses: actions/github-script@v4
+              name: Leave comment
+              if: steps.current_version.outputs.result == steps.previous_version.outputs.result
+              with:
+                script: |
+                    const payload = github.context.payload;
+                    if (payload.action === 'labeled' && payload.pull_request) {
+                    const prNumber = payload.pull_request.number;
+                    const commentBody = 'The latest release (${{steps.previous_version.outputs.result}}) and the current package version (${{steps.current_version.outputs.result}}) are the same. You might want to bump the version number.';
+                    await github.issues.createComment({
+                        owner: context.repo.owner,
+                        repo: context.repo.repo,
+                        issue_number: prNumber,
+                        body: commentBody,
+                    });
+                    console.log(`Commented on PR #${prNumber}`);
+                    }
