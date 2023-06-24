@@ -4,6 +4,8 @@ on:
     pull_request:
         types:
             - labeled
+        branches:
+            - main
 jobs:
     check-version:
         if: ${{ github.event.label.name == 'release' }}
@@ -28,20 +30,12 @@ jobs:
                     console.log(`Latest Release: ${latestRelease.tag_name}`);
                     return latestRelease.tag_name
                 result-encoding: string
-            - uses: actions/github-script@v4
-              name: Leave comment
+            - name: Add comment
               if: steps.current_version.outputs.result == steps.previous_version.outputs.result
+              uses: peter-evans/create-or-update-comment@v2
               with:
-                script: |
-                    const payload = github.event;
-                    if (payload.action === 'labeled' && payload.pull_request) {
-                    const prNumber = payload.pull_request.number;
-                    const commentBody = 'The latest release (${{steps.previous_version.outputs.result}}) and the current package version (${{steps.current_version.outputs.result}}) are the same. You might want to bump the version number.';
-                    await github.issues.createComment({
-                        owner: context.repo.owner,
-                        repo: context.repo.repo,
-                        issue_number: prNumber,
-                        body: commentBody,
-                    });
-                    console.log(`Commented on PR #${prNumber}`);
-                    }
+                issue-number: ${{ github.event.pull_request.number }}
+                body: |
+                  You labeled this PR as a _release_, but the current version of your package (`${{ steps.current_version.outputs.result }}`) already matches latest release (`${{ steps.previous_version.outputs.result }}`).
+
+                  You might want to bump the version before merging! :sparkles:
