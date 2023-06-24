@@ -1,15 +1,31 @@
-name: Python test
+name: Test the package
 on:
     push:
       branches:
         - main
         - develop
+      paths-ignore:
+        - .gitignore
+        - .github
+        - docs
+        - mkdocs.yml
+        - LICENSE
+        - CHANGELOG.md
+        - README.md
     pull_request:
       types:
         - opened
         - edited
         - reopened
         - synchronize
+      paths-ignore:
+        - .gitignore
+        - .github
+        - docs
+        - mkdocs.yml
+        - LICENSE
+        - CHANGELOG.md
+        - README.md
 jobs:
     test:
       strategy:
