@@ -6,8 +6,8 @@ on:
         - develop
       paths-ignore:
         - .gitignore
-        - .github
-        - docs
+        - .github/**/*
+        - docs/**/*
         - mkdocs.yml
         - LICENSE
         - CHANGELOG.md
@@ -20,8 +20,8 @@ on:
         - synchronize
       paths-ignore:
         - .gitignore
-        - .github
-        - docs
+        - .github/**/*
+        - docs/**/*
         - mkdocs.yml
         - LICENSE
         - CHANGELOG.md
