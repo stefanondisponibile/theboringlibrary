@@ -33,7 +33,7 @@ jobs:
               if: steps.current_version.outputs.result == steps.previous_version.outputs.result
               with:
                 script: |
-                    const payload = github.context.payload;
+                    const payload = github.context.payload || github.event;
                     if (payload.action === 'labeled' && payload.pull_request) {
                     const prNumber = payload.pull_request.number;
                     const commentBody = 'The latest release (${{steps.previous_version.outputs.result}}) and the current package version (${{steps.current_version.outputs.result}}) are the same. You might want to bump the version number.';
