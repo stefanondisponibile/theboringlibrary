@@ -14,6 +14,8 @@ jobs:
             - uses: actions/checkout@v3
             - uses: actions/setup-python@v4
             - uses: snok/install-poetry@v1.3.3
+            - name: Configure
+              run: pip install semver
             - name: Get current version
               id: current_version
               run: echo "result=v$(poetry version --short)" >> "$GITHUB_OUTPUT"
@@ -30,12 +32,15 @@ jobs:
                     console.log(`Latest Release: ${latestRelease.tag_name}`);
                     return latestRelease.tag_name
                 result-encoding: string
+            - name: Compare versions
+              id: comparison
+              run: python -c "import semver;print('result=', semver.compare('${{steps.current_version.outputs.result}}', '${{steps.previous_version.outputs.result}}'))" >> "$GITHUB_OUTPUT"
             - name: Add comment
-              if: steps.current_version.outputs.result == steps.previous_version.outputs.result
+              if: steps.comparison.outputs.result != '1'
               uses: peter-evans/create-or-update-comment@v2
               with:
                 issue-number: ${{ github.event.pull_request.number }}
                 body: |
-                  You labeled this PR as a _release_, but the current version of your package (`${{ steps.current_version.outputs.result }}`) already matches latest release (`${{ steps.previous_version.outputs.result }}`).
+                  You labeled this PR as a _release_, but the **current** version of your package (**`${{ steps.current_version.outputs.result }}`**) isn't higher than the **previous** release (**`${{ steps.previous_version.outputs.result }}`**).
 
                   You might want to bump the version before merging! :sparkles:
