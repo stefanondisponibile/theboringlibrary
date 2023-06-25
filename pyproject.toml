@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "theboringlibrary"
-version = "0.5.0"
+version = "0.6.0"
 description = "It does nothing!"
 authors = ["Stefano Frassetto <frassetto.stefano@gmail.com>"]
 readme = "README.md"
@@ -14,6 +14,9 @@ pytest = {version = "^7.3.2", optional = true}
 mkdocs = {version = "^1.4.3", optional = true}
 pytest-cov = "^4.1.0"
 coverage = {version = "^7.2.7", extras = ["toml"]}
+mkdocs-material = {version = "^9.1.17", optional = true}
+mkdocs-gen-files = {version = "^0.5.0", optional = true}
+mkdocstrings = {version = "^0.22.0", optional = true, extras = ["python"]}
 
 [tool.poetry.extras]
 
@@ -22,6 +25,9 @@ dev  = [
     "mkdocs",
     "pytest-cov",
     "coverage",
+    "mkdocs-material",
+    "mkdocstrings",
+    "mkdocs-gen-files",
 ]
 
 [tool.pytest.ini_options]
