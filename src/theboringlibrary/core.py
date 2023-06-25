@@ -11,4 +11,5 @@ def some_untested_fn() -> None:
     return do_nothing()
 
 def print_nothing() -> None:  # pragma: no cover
+    """Prints nothing."""
     print("Nothing! ✨")
