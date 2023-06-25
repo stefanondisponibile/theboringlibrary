@@ -1,5 +1,5 @@
 ---
-    name: Check Release version
+    name: Tag and Release
     on:
         pull_request:
             types:
@@ -37,5 +37,12 @@
                   run: python -c "import semver;print('result={}'.format(semver.compare('${{steps.current_version.outputs.result}}'[1:], '${{steps.previous_version.outputs.result}}'[1:])))" >> "$GITHUB_OUTPUT"
                 - name: Tag Release
                   if: steps.comparison.outputs.result == '1'
-                  run: git tag -a "${{steps.current_version.outputs.result}}" -m "${{steps.current_version.outputs.result}}" && git push --tags
+                  run: |
+                    git config user.email "41898282+github-actions[bot]@users.noreply.github.com" && \
+                    git config user.name "github-actions[bot]" && \
+                    git tag   
+                      -a "${{steps.current_version.outputs.result}}" \
+                      -m "Release ${{steps.current_version.outputs.result}}" \
+                      ${{github.event.pull_request.merge_commit_sha}} && \
+                    git push --tags
     
