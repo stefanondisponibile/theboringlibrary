@@ -25,11 +25,10 @@ dev  = [
 ]
 
 [tool.pytest.ini_options]
-addopts = "-v --cov=/src/theboringlibrary --cov-report=html --cov-append"
+addopts = "-v --cov=./src --cov-report=html --cov-append"
 
 [tool.coverage.report]
-omit = ["tests/*"]
-
+omit = ["tests"]
 
 [build-system]
 requires = ["poetry-core"]
