@@ -7,4 +7,5 @@ def do_nothing() -> None:
     return NOTHING
 
 def some_untested_fn() -> None:
-    ...
+    """It's actually tested now..."""
+    return do_nothing()
