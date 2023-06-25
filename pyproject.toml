@@ -27,6 +27,9 @@ dev  = [
 [tool.pytest.ini_options]
 addopts = "-v --cov=./src --cov-report=html --cov-append"
 
+[tool.poetry.scripts]
+theboringlibrary = "theboringlibrary.core:print_nothing"
+
 [tool.coverage.report]
 omit = ["tests"]
 
