@@ -1,4 +1,4 @@
-"""This literally does nothing..."""
+"""This literally does nothing."""
 
 NOTHING = None
 
