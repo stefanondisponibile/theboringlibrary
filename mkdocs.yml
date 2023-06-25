@@ -1,3 +1,35 @@
 site_name: BOH
 site_url: https://stefanondisponibile.github.io/theboringlibrary/
-theme: readthedocs
+theme:
+  name: material
+  logo: img/wb.png
+  palette:
+    scheme: default
+    primary: red
+  features:
+    - content.code.annotate
+    - content.code.copy
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+plugins: 
+  - search
+  - gen-files:
+      scripts:
+      - docs/gen_ref_pages.py
+  - mkdocstrings:
+      handlers:
+          python:
+            options:
+              docstring_style: google
+extra_css:
+- css/termynal.css
+extra_javascript:
+- js/termynal.js
+- js/custom.js
+
