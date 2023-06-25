@@ -40,7 +40,7 @@
                   run: |
                     git config user.email "41898282+github-actions[bot]@users.noreply.github.com" && \
                     git config user.name "github-actions[bot]" && \
-                    git tag   
+                    git tag \
                       -a "${{steps.current_version.outputs.result}}" \
                       -m "Release ${{steps.current_version.outputs.result}}" \
                       ${{github.event.pull_request.merge_commit_sha}} && \
