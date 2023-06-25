@@ -46,4 +46,10 @@ jobs:
         - name: Install dependencies
           run: poetry install -E dev
         - name: Run tests
-          run: poetry run pytest
+          run: poetry run pytest --cov=src --cov-report=xml tests
+        - name: Upload coverage
+          uses: codecov/codecov-action@v3
+          with:
+            file: ./coverage.xml
+            fail_ci_if_error: true
+            verbose: true
