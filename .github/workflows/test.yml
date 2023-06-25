@@ -46,4 +46,11 @@ jobs:
         - name: Install dependencies
           run: poetry install -E dev
         - name: Run tests
-          run: poetry run pytest
+          run: poetry run pytest --cov=src --cov-report=xml tests
+        - name: Upload coverage
+          uses: codecov/codecov-action@v3
+          env: 
+            CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+          with:
+            file: ./coverage.xml
+            verbose: true
